@@ -6,4 +6,4 @@
 ### Responsable de la entrega:
 | Padrón | Apellidos, Nombres |  Fecha   | Deadline  |
 | :----- | :------------------|  :---:   | :-------: |
-| 112959 |   Maizares, Bruno  |17-09-2026| Semana 05 |
+| 112909 |   Sorroza, Fausto  |17-09-2026| Semana 05 |
