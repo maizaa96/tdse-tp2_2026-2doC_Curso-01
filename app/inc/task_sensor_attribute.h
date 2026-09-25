@@ -50,8 +50,11 @@ typedef enum task_sensor_ev {EV_BTN_UP,
 							 EV_BTN_DOWN} task_sensor_ev_t;
 
 /* States of Task Sensor */
-typedef enum task_sensor_st {ST_BTN_IDLE,
-							 ST_BTN_ACTIVE} task_sensor_st_t;
+typedef enum task_sensor_st {ST_BTN_UP,
+							 ST_BTN_DOWN,
+							ST_BTN_FALLING,
+							ST_BTN_RISING} task_sensor_st_t; //Agregamos los dos estados intermedios.
+
 
 /* Identifier of Task Sensor */
 typedef enum task_sensor_id {ID_BTN_A} task_sensor_id_t;
@@ -63,8 +66,8 @@ typedef struct
 	uint16_t			pin;
 	GPIO_PinState		pressed;
 	uint32_t			tick_max;
-	task_system_ev_t	signal_up;
-	task_system_ev_t	signal_down;
+	task_system_ev_t	EV_SYS_BTN_UP;
+	task_system_ev_t	EV_SYS_BTN_DOWN; //Le cambie el nombre a las senales que envia.
 } task_sensor_cfg_t;
 
 typedef struct

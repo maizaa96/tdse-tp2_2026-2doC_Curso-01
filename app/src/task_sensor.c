@@ -94,7 +94,7 @@ void task_sensor_init(void *parameters)
 		p_task_sensor_dta = &task_sensor_dta_list[index];
 
 		/* Init & Print out: Index & Task execution FSM */
-		state = ST_BTN_IDLE;
+		state = ST_BTN_UP;
 		p_task_sensor_dta->state = state;
 
 		event = EV_BTN_UP;
@@ -139,30 +139,68 @@ void task_sensor_statechart(uint32_t index)
 
 	switch (p_task_sensor_dta->state)
 	{
-		case ST_BTN_IDLE:
+		case ST_BTN_UP: //le cambie el nombre a de BTN_IDLE a BTN_UP
 
 			if (EV_BTN_DOWN == p_task_sensor_dta->event)
 			{
-				put_event_task_system(p_task_sensor_cfg->signal_down);
-				p_task_sensor_dta->state = ST_BTN_ACTIVE;
+				p_task_sensor_dta->tick = DEL_BTN_MAX; //setea el tick al delay.
+				p_task_sensor_dta->state = ST_BTN_FALLING; //cambiamos el estado a FALLING
+
 			}
 
 			break;
 
-		case ST_BTN_ACTIVE:
+
+		case ST_BTN_FALLING: //agregado el estado de falling
+
+					if (EV_BTN_UP == p_task_sensor_dta->event && p_task_sensor_dta->tick == 0)
+					{
+						p_task_sensor_dta->state = ST_BTN_UP;
+					}
+
+					else if (p_task_sensor_dta->tick>0) {
+						p_task_sensor_dta->tick--;
+					}
+
+					else if(EV_BTN_DOWN == p_task_sensor_dta->event && p_task_sensor_dta->tick==0){
+						put_event_task_system(p_task_sensor_cfg->EV_SYS_BTN_DOWN);
+						p_task_sensor_dta->state = ST_BTN_DOWN;
+					}
+					break;
+
+
+		case ST_BTN_DOWN:
 
 			if (EV_BTN_UP == p_task_sensor_dta->event)
 			{
-				put_event_task_system(p_task_sensor_cfg->signal_up);
-				p_task_sensor_dta->state = ST_BTN_IDLE;
+				p_task_sensor_dta->tick = DEL_BTN_MAX;
+				p_task_sensor_dta->state = ST_BTN_RISING;
 			}
 
 			break;
+
+
+		case ST_BTN_RISING: //agregado el estado de rising
+
+							if (EV_BTN_DOWN == p_task_sensor_dta->event && p_task_sensor_dta->tick == 0)
+							{
+								p_task_sensor_dta->state = ST_BTN_DOWN;
+							}
+
+							else if (p_task_sensor_dta->tick>0) {
+								p_task_sensor_dta->tick--;
+							}
+
+							else if(EV_BTN_UP == p_task_sensor_dta->event && p_task_sensor_dta->tick==0){
+								put_event_task_system(p_task_sensor_cfg->EV_SYS_BTN_UP);
+								p_task_sensor_dta->state = ST_BTN_UP;
+							}
+							break;
 
 		default:
 
 			p_task_sensor_dta->tick  = DEL_BTN_MIN;
-			p_task_sensor_dta->state = ST_BTN_IDLE;
+			p_task_sensor_dta->state = ST_BTN_UP;
 			p_task_sensor_dta->event = EV_BTN_UP;
 
 			break;
