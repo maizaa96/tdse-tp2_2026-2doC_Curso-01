@@ -51,8 +51,9 @@ typedef enum task_actuator_ev {EV_LED_OFF,
 							   EV_LED_BLINK} task_actuator_ev_t;
 
 /* States of Task Actuator */
-typedef enum task_actuator_st {ST_LED_IDLE,
-							   ST_LED_ACTIVE} task_actuator_st_t;
+typedef enum task_actuator_st {ST_LED_OFF,
+							   ST_LED_ON,
+							   ST_LED_BLINK} task_actuator_st_t;
 
 /* Identifier of Task Actuator */
 typedef enum task_actuator_id {ID_LED_BARRIER_OPEN,
@@ -63,7 +64,7 @@ typedef struct
 	task_actuator_id_t	identifier;
 	GPIO_TypeDef *		gpio_port;
 	uint16_t			pin;
-	GPIO_PinState		led_on;
+	GPIO_PinState		led_on	;
 	GPIO_PinState		led_off;
 	uint32_t			tick_max;
 } task_actuator_cfg_t;
