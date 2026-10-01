@@ -161,6 +161,8 @@ void task_system_normal_statechart(void)
 				p_task_system_dta->state = ST_SYS_WAIT_FOR_BUTTON_PRESSED;
 			}
 
+
+
 			break;
 
 		case ST_SYS_WAIT_FOR_BUTTON_PRESSED:
@@ -173,6 +175,7 @@ void task_system_normal_statechart(void)
 				put_event_task_actuator(EV_LED_BLINK, ID_LED_BARRIER_OPEN);
 				put_event_task_actuator(EV_LED_OFF, ID_LED_BARRIER_CLOSE);
 			}
+
 
 			break;
 
